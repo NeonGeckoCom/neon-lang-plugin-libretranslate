@@ -1,0 +1,1 @@
+from libretranslate_neon_plugin.constants.url_constants import DEFAULT_LIBRE_HOST

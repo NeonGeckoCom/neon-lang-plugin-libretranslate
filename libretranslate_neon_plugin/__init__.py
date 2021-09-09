@@ -1,14 +1,15 @@
-from ovos_plugin_manager.templates.language import LanguageDetector,\
-    LanguageTranslator
 import requests
 
+from ovos_plugin_manager.templates.language import LanguageDetector,\
+    LanguageTranslator
+
+from libretranslate_neon_plugin.constants import DEFAULT_LIBRE_HOST
 
 class LibreTranslateDetectPlugin(LanguageDetector):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # host it yourself https://github.com/uav4geo/LibreTranslate
-        self.url = self.config.get("libretranslate_host") or \
-                   "https://libretranslate.com/detect"
+        self.url = self.config.get("libretranslate_host") or DEFAULT_LIBRE_HOST
         self.api_key = self.config.get("key")
 
     def detect(self, text):
@@ -25,8 +26,7 @@ class LibreTranslatePlugin(LanguageTranslator):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # host it yourself https://github.com/uav4geo/LibreTranslate
-        self.url = self.config.get("libretranslate_host") or \
-                   "https://libretranslate.com/translate"
+        self.url = self.config.get("libretranslate_host") or DEFAULT_LIBRE_HOST
         self.api_key = self.config.get("key")
 
     def translate(self, text, target=None, source=None, url=None):

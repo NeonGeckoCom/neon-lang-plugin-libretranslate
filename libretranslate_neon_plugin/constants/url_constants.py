@@ -1,0 +1,1 @@
+DEFAULT_LIBRE_HOST = "http://translate.neon.ai:5000"
