@@ -30,6 +30,7 @@ from ovos_plugin_manager.templates.language import LanguageDetector,\
 
 from libretranslate_neon_plugin.constants import DEFAULT_LIBRE_HOST
 
+
 class LibreTranslateDetectPlugin(LanguageDetector):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
