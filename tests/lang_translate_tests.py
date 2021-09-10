@@ -31,22 +31,19 @@ import unittest
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 from libretranslate_neon_plugin import LibreTranslatePlugin
 
-with open(os.path.expanduser("~/.local/share/neon/aws.json")) as f:
-    config = json.load(f)
-
 
 class LangTranslateTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.translator = LibreTranslatePlugin(config=config)
+        cls.translator = LibreTranslatePlugin()
 
     def test_translate_spec_input(self):
-        translated = self.translator.translate("hello", "zh", "en")
-        self.assertEqual(translated, "你好")
+        translated = self.translator.translate("hello", "es", "en")
+        self.assertEqual(translated.lower(), "hola")
 
-    def test_translate_auto(self):
-        translated = self.translator.translate("你好", "en")
-        self.assertEqual(translated.lower(), "hello")
+    # def test_translate_auto(self):
+    #     translated = self.translator.translate("你好", "en")
+    #     self.assertEqual(translated.lower(), "hello")
 
     def test_translate_invalid(self):
         invalid_str = "abcdefg"
