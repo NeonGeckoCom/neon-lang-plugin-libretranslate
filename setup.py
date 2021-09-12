@@ -25,6 +25,7 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE,  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+from os import path, getenv
 from setuptools import setup
 
 PLUGIN_ENTRY_POINT = 'libretranslate_plug = libretranslate_neon_plugin:LibreTranslatePlugin'

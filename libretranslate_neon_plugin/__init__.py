@@ -36,6 +36,8 @@ class LibreTranslateDetectPlugin(LanguageDetector):
         super().__init__(*args, **kwargs)
         # host it yourself https://github.com/uav4geo/LibreTranslate
         self.url = self.config.get("libretranslate_host") or DEFAULT_LIBRE_HOST
+        if not self.url.endswith("/detect"):
+            self.url = f"{self.url}/detect"
         self.api_key = self.config.get("key")
 
     def detect(self, text):
@@ -45,7 +47,10 @@ class LibreTranslateDetectPlugin(LanguageDetector):
         params = {"q": text}
         if self.api_key:
             params["api_key"] = self.api_key
-        return requests.post(self.url, params=params).json()
+        result = requests.post(f"{self.url}", data=params)
+        if not result.ok:
+            raise Exception(result.text)
+        return result.json()
 
 
 class LibreTranslatePlugin(LanguageTranslator):
@@ -53,6 +58,8 @@ class LibreTranslatePlugin(LanguageTranslator):
         super().__init__(*args, **kwargs)
         # host it yourself https://github.com/uav4geo/LibreTranslate
         self.url = self.config.get("libretranslate_host") or DEFAULT_LIBRE_HOST
+        if not self.url.endswith("/translate"):
+            self.url = f"{self.url}/translate"
         self.api_key = self.config.get("key")
 
     def translate(self, text, target=None, source=None, url=None):
@@ -63,7 +70,9 @@ class LibreTranslatePlugin(LanguageTranslator):
                   "target": target.split("-")[0]}
         if self.api_key:
             params["api_key"] = self.api_key
-        r = requests.post(self.url, params=params).json()
-        if r.get("error"):
+        r = requests.post(self.url, data=params)
+        if not r.ok:
+            raise Exception(r.text)
+        if r.json().get("error"):
             return None
-        return r["translatedText"]
+        return r.json()["translatedText"].strip().rstrip('.')
