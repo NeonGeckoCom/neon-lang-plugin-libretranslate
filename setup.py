@@ -62,7 +62,7 @@ with open("./version.py", "r", encoding="utf-8") as v:
                 version = line.split("'")[1]
 
 setup(
-    name='libretranslate_neon_plugin',
+    name='neon-lang-plugin-libretranslate',
     version=version,
     description='',
     url='',
@@ -72,6 +72,7 @@ setup(
     packages=['libretranslate_neon_plugin'],
     install_requires=get_requirements(requirements_filename='requirements.txt'),
     long_description=long_description,
+    long_description_content_type="text/markdown",
     zip_safe=True,
     classifiers=[
         'Development Status :: 3 - Alpha',
