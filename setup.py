@@ -26,7 +26,7 @@
 # SOFTWARE,  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from os import path, getenv
-from setuptools import setup
+from setuptools import setup, find_packages
 
 PLUGIN_ENTRY_POINT = 'libretranslate_plug = libretranslate_neon_plugin:LibreTranslatePlugin'
 
@@ -69,7 +69,7 @@ setup(
     author='Neongecko',
     author_email='developers@neon.ai',
     license='BSD-3-Clause',
-    packages=['libretranslate_neon_plugin'],
+    packages=find_packages(),
     install_requires=get_requirements(requirements_filename='requirements.txt'),
     long_description=long_description,
     long_description_content_type="text/markdown",
