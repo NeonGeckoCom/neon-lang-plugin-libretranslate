@@ -49,6 +49,13 @@ class LangDetectTests(unittest.TestCase):
         scores = self.detector.detect_probs("en")
         self.assertIsInstance(scores, list)
 
+    def test_available_langauges(self):
+        langs = self.detector.available_languages
+        self.assertIsInstance(langs, set)
+        self.assertIn('en', langs)
+        self.assertIn('uk', langs)
+        self.assertIn('pt', langs)
+
 
 if __name__ == '__main__':
     unittest.main()
