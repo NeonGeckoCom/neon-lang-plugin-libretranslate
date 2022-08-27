@@ -70,15 +70,16 @@ class LibreTranslatePlugin(LanguageTranslator):
             self.url = self.url.rsplit('/', 1)[0]
         self.api_key = self.config.get("key")
 
-    def translate(self, text, target=None, source=None, url=None):
+    def translate(self, text, target=None, source=None):
         source = source or self.default_language
         target = target or self.internal_language
+        url = f'{self.url}/translate'
         params = {"q": text,
                   "source": source.split("-")[0],
                   "target": target.split("-")[0]}
         if self.api_key:
             params["api_key"] = self.api_key
-        r = requests.post(self.url, data=params)
+        r = requests.post(url, data=params)
         if not r.ok:
             raise Exception(r.text)
         if r.json().get("error"):
