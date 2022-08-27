@@ -1,2 +1,2 @@
-ovos-plugin-manager>=0.0.19a1
+ovos-plugin-manager~=0.0.18
 requests
