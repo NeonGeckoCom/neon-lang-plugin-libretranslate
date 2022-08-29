@@ -50,6 +50,13 @@ class LangTranslateTests(unittest.TestCase):
         translated = self.translator.translate(invalid_str, "es", "en")
         self.assertEqual(translated, invalid_str)
 
+    def test_available_langauges(self):
+        langs = self.translator.available_languages
+        self.assertIsInstance(langs, set)
+        self.assertIn('en', langs)
+        self.assertIn('uk', langs)
+        self.assertIn('pt', langs)
+
 
 if __name__ == '__main__':
     unittest.main()

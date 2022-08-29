@@ -27,7 +27,7 @@ import requests
 
 from ovos_plugin_manager.templates.language import LanguageDetector,\
     LanguageTranslator
-
+from ovos_utils.log import LOG
 from libretranslate_neon_plugin.constants import DEFAULT_LIBRE_HOST
 
 
@@ -36,21 +36,29 @@ class LibreTranslateDetectPlugin(LanguageDetector):
         super().__init__(*args, **kwargs)
         # host it yourself https://github.com/uav4geo/LibreTranslate
         self.url = self.config.get("libretranslate_host") or DEFAULT_LIBRE_HOST
-        if not self.url.endswith("/detect"):
-            self.url = f"{self.url}/detect"
+        if self.url.endswith("/detect"):
+            self.url = self.url.rsplit('/', 1)[0]
         self.api_key = self.config.get("key")
 
     def detect(self, text):
         return self.detect_probs(text)[0]["language"]
 
     def detect_probs(self, text):
+        url = f'{self.url}/detect'
         params = {"q": text}
         if self.api_key:
             params["api_key"] = self.api_key
-        result = requests.post(f"{self.url}", data=params)
+        result = requests.post(url, data=params)
         if not result.ok:
             raise Exception(result.text)
         return result.json()
+
+    @property
+    def available_languages(self):
+        resp = requests.get(f'{self.url}/languages').json()
+        LOG.debug(resp)
+        langs = [l.get('code') for l in resp if l.get('code')]
+        return set(langs)
 
 
 class LibreTranslatePlugin(LanguageTranslator):
@@ -58,21 +66,29 @@ class LibreTranslatePlugin(LanguageTranslator):
         super().__init__(*args, **kwargs)
         # host it yourself https://github.com/uav4geo/LibreTranslate
         self.url = self.config.get("libretranslate_host") or DEFAULT_LIBRE_HOST
-        if not self.url.endswith("/translate"):
-            self.url = f"{self.url}/translate"
+        if self.url.endswith("/translate"):
+            self.url = self.url.rsplit('/', 1)[0]
         self.api_key = self.config.get("key")
 
-    def translate(self, text, target=None, source=None, url=None):
+    def translate(self, text, target=None, source=None):
         source = source or self.default_language
         target = target or self.internal_language
+        url = f'{self.url}/translate'
         params = {"q": text,
                   "source": source.split("-")[0],
                   "target": target.split("-")[0]}
         if self.api_key:
             params["api_key"] = self.api_key
-        r = requests.post(self.url, data=params)
+        r = requests.post(url, data=params)
         if not r.ok:
             raise Exception(r.text)
         if r.json().get("error"):
             return None
         return r.json()["translatedText"].strip().rstrip('.')
+
+    @property
+    def available_languages(self):
+        resp = requests.get(f'{self.url}/languages').json()
+        LOG.debug(resp)
+        langs = [l.get('code') for l in resp if l.get('code')]
+        return set(langs)
