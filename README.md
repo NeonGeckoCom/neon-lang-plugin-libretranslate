@@ -5,6 +5,6 @@ Language Plugin for LibreTranslate language detection and translation
 
 ```yaml
 keys:
-  amazon: {"libretranslate_host": "http://translate.neon.ai:5000",
+  libretranslate: {"libretranslate_host": "https://libretranslate.2022.us",
            "key": "<LIBRETRANSLATE_API_KEY>"}
 ```
