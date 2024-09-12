@@ -47,16 +47,16 @@ jobs:
         run: |
           pytest tests/lang_detect_tests.py --doctest-modules --junitxml=tests/lang-detect-test-results.xml
       - name: Upload language detector test results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
-          name: lang-detect-test-results
+          name: lang-detect-test-results-${{ matrix.python-version }}
           path: tests/lang-detect-test-results.xml
 
       - name: Test Language Translator
         run: |
           pytest tests/lang_translate_tests.py --doctest-modules --junitxml=tests/lang-translate-test-results.xml
       - name: Upload language translator test results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
-          name: lang-translate-test-results
+          name: lang-translate-test-results-${{ matrix.python-version }}
           path: tests/lang-translate-test-results.xml
