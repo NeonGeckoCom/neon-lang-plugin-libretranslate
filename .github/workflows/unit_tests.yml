@@ -49,7 +49,7 @@ jobs:
       - name: Upload language detector test results
         uses: actions/upload-artifact@v2
         with:
-          name: lang-detect-test-results
+          name: lang-detect-test-results-${{ matrix.python-version }}
           path: tests/lang-detect-test-results.xml
 
       - name: Test Language Translator
@@ -58,5 +58,5 @@ jobs:
       - name: Upload language translator test results
         uses: actions/upload-artifact@v2
         with:
-          name: lang-translate-test-results
+          name: lang-translate-test-results-${{ matrix.python-version }}
           path: tests/lang-translate-test-results.xml
